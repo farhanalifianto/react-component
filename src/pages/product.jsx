@@ -68,10 +68,10 @@ const ProductPage = (props) =>{
     }
     return(
     <>
-        <div className="flex justify-start h-20 bg-blue-600 text-white items-center px-5">{email}
+        <div className="flex w-full fixed justify-start h-20 bg-blue-600 text-white items-center px-5">{email}
             <Button variant="ml-5 bg-black" onClick={handleLogout}>Logout</Button>
         </div>
-        <div className="flex justify-center py-5">
+        <div className="flex justify-center py-5 pt-20">
             <div className="w-3/4 flex flex-wrap">
             {products.map((product)=>(
             <CardProduct key={product.id}>
