@@ -1,6 +1,6 @@
 import Button from "../components/Elements/Button/button"
 import CardProduct from "../components/Fragments/card_product"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 const products = [
     {
@@ -66,6 +66,16 @@ const ProductPage = (props) =>{
             setCart([...cart,{id,qty:1}])
         }
     }
+
+    //useRef
+    const totalPriceRef = useRef(null)
+    useEffect(()=>{
+        if(cart.length > 0){
+            totalPriceRef.current.style.display = 'table-row'
+        }else{
+            totalPriceRef.current.style.display = 'none'
+        }
+        },[cart])
     return(
     <>
         <div className="flex w-full fixed justify-start h-20 bg-blue-600 text-white items-center px-5">{email}
@@ -107,7 +117,7 @@ const ProductPage = (props) =>{
                                 </tr>
                             )
                         })}
-                        <tr>
+                        <tr ref={totalPriceRef}>
                             <td colSpan={3}>
                                 <b>Total Price</b>
                             </td>
