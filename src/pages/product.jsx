@@ -1,47 +1,27 @@
 import Button from "../components/Elements/Button/button"
 import CardProduct from "../components/Fragments/card_product"
 import { useState, useEffect, useRef } from "react"
+import { getProducts } from "../service/product.service"
 
-const products = [
-    {
-        id:1,
-        title:"Shoes",
-        price:599000,
-        image:"/images/shoes-1.jpg",
-        decsription:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, modi possimus. Optio rem vero"
-    },
-    {
-        id:2,
-        title:"Redux",
-        price:769000,
-        image:"/images/shoes-1.jpg",
-        decsription:"Lorem dffd sdfsdf  ipsum dolor sit amet consectetur adipisicing elit. Iure, modi possimus. Optio rem vero"
-    },
-    {
-        id:3,
-        title:"Redux",
-        price:649000,
-        image:"/images/shoes-1.jpg",
-        decsription:"Lorem dffd sdfsdf  ipsum dolor sit amet consectetur adipisicing elit. Iure, modi possimus. Optio rem vero"
-    },
-    {
-        id:4,
-        title:"REDEDED",
-        price:7649000,
-        image:"/images/shoes-1.jpg",
-        decsription:"Lorem dffd sdfsdf  ipsum dolor sit amet consectetur adipisicing elit. Iure, modi possimus. Optio rem vero"
-    }
 
-]
 const email = localStorage.getItem('email')
 const ProductPage = (props) =>{
     const [cart,setCart] = useState([])
     const [totalPrice,setTotalPrice] = useState(0)
+    const [products,setProducts] = useState([])
+
     useEffect(()=>{
         setCart(JSON.parse(localStorage.getItem('cart')) || [])
     },[])
+
     useEffect(()=>{
-    if(cart.length > 0){
+        getProducts((data)=>{
+            setProducts(data)
+        })
+    },[])
+
+    useEffect(()=>{
+    if(products.length > 0 && cart.length > 0){
         const sum = cart.reduce((acc,item)=>{
             const product = products.find((product)=>product.id === item.id);
             return acc + product.price * item.qty
@@ -49,7 +29,9 @@ const ProductPage = (props) =>{
         setTotalPrice(sum)
         localStorage.setItem('cart',JSON.stringify(cart))
     }
-    },[cart]);
+    },[cart,products]);
+
+
 
 
     const handleLogout = () =>{
@@ -83,11 +65,11 @@ const ProductPage = (props) =>{
         </div>
         <div className="flex justify-center py-5 pt-20">
             <div className="w-3/4 flex flex-wrap">
-            {products.map((product)=>(
+            {products.length > 0 && products.map((product)=>(
             <CardProduct key={product.id}>
                 <CardProduct.Header image={product.image}/>
                 <CardProduct.Body title={product.title}>
-                    {product.decsription}
+                    {product.description}
                 </CardProduct.Body>
                 <CardProduct.Footer price={product.price} id={product.id}
                 HandleAddToCart={HandleAddToCart}/>
@@ -106,7 +88,7 @@ const ProductPage = (props) =>{
                         </tr>
                     </thead>
                     <tbody>
-                        {cart.map((item)=>{
+                        {products.length > 0 && cart.map((item)=>{
                             const product = products.find((p) => p.id === item.id)
                             return(
                                 <tr key={item.id}>
