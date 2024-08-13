@@ -92,7 +92,7 @@ const ProductPage = (props) =>{
                             const product = products.find((p) => p.id === item.id)
                             return(
                                 <tr key={item.id}>
-                                    <td>{product.title}</td>
+                                    <td>{product.title.substring(0,10)}...</td>
                                     <td>Rp {product.price.toLocaleString('id-ID',{styles:'currency',  currency:'IDR'})}</td>
                                     <td>{item.qty}</td>
                                     <td>Rp.{(product.price * item.qty).toLocaleString('id-ID',{styles:'currency',  currency:'IDR'})}</td>
