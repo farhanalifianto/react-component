@@ -5,28 +5,37 @@ import { getProducts } from "../service/product.service"
 import { getUsername } from "../service/auth.service"
 
 
-const token = localStorage.getItem('token')
+
 const ProductPage = (props) =>{
     const [cart,setCart] = useState([])
     const [totalPrice,setTotalPrice] = useState(0)
     const [products,setProducts] = useState([])
     const [username,setUsername] = useState("")
 
+    //menyimpan keranjang
     useEffect(()=>{
         setCart(JSON.parse(localStorage.getItem('cart')) || [])
     },[])
 
-
+    //menyimpan token
     useEffect(()=>{
-        setUsername(getUsername(token))
+        const token = localStorage.getItem('token')
+        if (token){
+            setUsername(getUsername(token))}
+        else{
+            //jika token tidak ada
+            window.location.href ="/login"
+        }
+  
     },[])
-
+    //menyimpan product
     useEffect(()=>{
         getProducts((data)=>{
             setProducts(data)
         })
     },[])
 
+    //menyimpan total price
     useEffect(()=>{
     if(products.length > 0 && cart.length > 0){
         const sum = cart.reduce((acc,item)=>{
@@ -40,12 +49,13 @@ const ProductPage = (props) =>{
 
 
 
-
+    //untuk keluar
     const handleLogout = () =>{
-        localStorage.removeItem('email')
-        localStorage.removeItem('password')
+        localStorage.removeItem('token')
         window.location.href ="/login"
     }
+
+    //untuk add to cart
     const HandleAddToCart = (id) =>{
         if(cart.find((item)=>item.id === id)){
             setCart(
@@ -66,10 +76,12 @@ const ProductPage = (props) =>{
         }
         },[cart])
     return(
-    <>
+    <>  
+        {/* navbar */}
         <div className="flex w-full fixed justify-start h-20 bg-blue-600 text-white items-center px-5">{username}
             <Button variant="ml-5 bg-black" onClick={handleLogout}>Logout</Button>
         </div>
+        {/* navbar section end */}
         <div className="flex justify-center py-5 pt-20">
             <div className="w-3/4 flex flex-wrap">
             {products.length > 0 && products.map((product)=>(
@@ -98,6 +110,7 @@ const ProductPage = (props) =>{
                         {products.length > 0 && cart.map((item)=>{
                             const product = products.find((p) => p.id === item.id)
                             return(
+                                // isi table cart
                                 <tr key={item.id}>
                                     <td>{product.title.substring(0,10)}...</td>
                                     <td>Rp {product.price.toLocaleString('id-ID',{styles:'currency',  currency:'IDR'})}</td>
