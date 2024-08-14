@@ -2,16 +2,23 @@ import Button from "../components/Elements/Button/button"
 import CardProduct from "../components/Fragments/card_product"
 import { useState, useEffect, useRef } from "react"
 import { getProducts } from "../service/product.service"
+import { getUsername } from "../service/auth.service"
 
 
-const email = localStorage.getItem('email')
+const token = localStorage.getItem('token')
 const ProductPage = (props) =>{
     const [cart,setCart] = useState([])
     const [totalPrice,setTotalPrice] = useState(0)
     const [products,setProducts] = useState([])
+    const [username,setUsername] = useState("")
 
     useEffect(()=>{
         setCart(JSON.parse(localStorage.getItem('cart')) || [])
+    },[])
+
+
+    useEffect(()=>{
+        setUsername(getUsername(token))
     },[])
 
     useEffect(()=>{
@@ -60,7 +67,7 @@ const ProductPage = (props) =>{
         },[cart])
     return(
     <>
-        <div className="flex w-full fixed justify-start h-20 bg-blue-600 text-white items-center px-5">{email}
+        <div className="flex w-full fixed justify-start h-20 bg-blue-600 text-white items-center px-5">{username}
             <Button variant="ml-5 bg-black" onClick={handleLogout}>Logout</Button>
         </div>
         <div className="flex justify-center py-5 pt-20">
