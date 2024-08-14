@@ -2,7 +2,7 @@ import Button from "../components/Elements/Button/button"
 import CardProduct from "../components/Fragments/card_product"
 import { useState, useEffect, useRef } from "react"
 import { getProducts } from "../service/product.service"
-import { getUsername } from "../service/auth.service"
+import { useLogin } from "../hooks/useLogin"
 
 
 
@@ -10,24 +10,15 @@ const ProductPage = (props) =>{
     const [cart,setCart] = useState([])
     const [totalPrice,setTotalPrice] = useState(0)
     const [products,setProducts] = useState([])
-    const [username,setUsername] = useState("")
+    const username = useLogin()
 
     //menyimpan keranjang
     useEffect(()=>{
         setCart(JSON.parse(localStorage.getItem('cart')) || [])
     },[])
 
-    //menyimpan token
-    useEffect(()=>{
-        const token = localStorage.getItem('token')
-        if (token){
-            setUsername(getUsername(token))}
-        else{
-            //jika token tidak ada
-            window.location.href ="/login"
-        }
-  
-    },[])
+
+
     //menyimpan product
     useEffect(()=>{
         getProducts((data)=>{
