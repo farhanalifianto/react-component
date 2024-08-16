@@ -11,7 +11,7 @@ const DetailProductPage = () => {
             setProducts(data)
         })
     )
-    },[id])
+    },[])
     
     return (
     <div className="flex w-100 min-h-screen justify-center items-center">
