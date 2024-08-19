@@ -4,9 +4,6 @@ import { getProducts } from "../service/product.service"
 import { useLogin } from "../hooks/useLogin"
 import TableCart from "../components/Fragments/tablecart"
 import NavBar from "../components/Layouts/navbar"
-
-
-
 const ProductPage = (props) =>{
     const [products,setProducts] = useState([])
     const username = useLogin()
@@ -15,21 +12,12 @@ const ProductPage = (props) =>{
     // useEffect(()=>{
     //     setCart(JSON.parse(localStorage.getItem('cart')) || [])
     // },[])
-
-
-
     //menyimpan product
     useEffect(()=>{
         getProducts((data)=>{
             setProducts(data)
         })
     },[])
-
-
-
-
-    //untuk keluar
-
 
     return(
     <>      
