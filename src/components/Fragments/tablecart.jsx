@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { useState } from "react"
 import { useEffect,useRef } from "react"
+import { DarkMode } from "../../context/darkmode"
 
 
 const TableCart = (props) => {
@@ -32,7 +33,7 @@ const TableCart = (props) => {
         
     return (
 
-        <table className="text-left border-separate border-spacing-x-5">
+        <table className={`text-left border-separate border-spacing-x-5 ${DarkMode && 'text-white'}`}>
             <thead>
                 <tr>
                     <th>Product</th>

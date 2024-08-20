@@ -2,10 +2,12 @@ import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
 import { getDetailProducts } from "../service/product.service"
+import { useLogin } from "../hooks/useLogin"
+import NavBar from "../components/Layouts/navbar"
 const DetailProductPage = () => {
     const {id} = useParams()
     const [products,setProducts] = useState({})
-
+    const username = useLogin()
     useEffect(()=> {
         getDetailProducts(id,(data=>{
             setProducts(data)
@@ -14,6 +16,11 @@ const DetailProductPage = () => {
     },[])
     
     return (
+    <>
+    <NavBar/>
+    <div>
+        {username}
+    </div>
     <div className="flex w-100 min-h-screen justify-center items-center">
         <div className="flex font-sans max-w-xl">
         <div className="flex-none w-48 relative">
@@ -57,6 +64,7 @@ const DetailProductPage = () => {
         </form>
     </div>
     </div>
+    </>
     )
 }
 export default DetailProductPage
