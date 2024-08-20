@@ -2,13 +2,15 @@ import { useSelector } from "react-redux"
 import { useState,useContext } from "react"
 import { useEffect,useRef } from "react"
 import { DarkMode } from "../../context/darkmode"
+import { useTotalPriceDispatch,useTotalPrice } from "../../context/totalprice"
 
 
 const TableCart = (props) => {
     const {products} = props
     const cart = useSelector(state => state.cart.data)
-    const [totalPrice,setTotalPrice] = useState(0)
-    const {isDarkMode,setDarkMode} = useContext(DarkMode)
+    const {isDarkMode,setDarkMode} = useContext(DarkMode);
+    const dispatch= useTotalPriceDispatch()
+    const {total} = useTotalPrice()
 
         //menyimpan total price
     useEffect(()=>{
@@ -17,7 +19,10 @@ const TableCart = (props) => {
                 const product = products.find((product)=>product.id === item.id);
                 return acc + product.price * item.qty
             },0);
-            setTotalPrice(sum)
+            dispatch({
+                type:"UPDATE",
+                payload:{total: sum}
+            })
             localStorage.setItem('cart',JSON.stringify(cart))
         }
         },[cart,products]);
@@ -61,7 +66,7 @@ const TableCart = (props) => {
                         <b>Total Price</b>
                     </td>
                     <td>
-                        <b>Rp {totalPrice.toLocaleString('id-ID',{styles:'currency',  currency:'IDR'})}</b>
+                        <b>Rp {total.toLocaleString('id-ID',{styles:'currency',  currency:'IDR'})}</b>
                     </td>
                 </tr>
             </tbody>
